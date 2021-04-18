@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from './firebase.config';
 import { Button } from '@material-ui/core';
+import { UserContext } from '../../App';
 
 // Initialize Firebase
 if (firebase.apps.length === 0) {
@@ -10,13 +11,15 @@ if (firebase.apps.length === 0) {
 }
 
 const Login = () => {
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+
   const handleGoogleSignIn = () => {
     const googleProvider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(googleProvider)
       .then((result) => {
         const { displayName, email } = result.user;
         const signedInUser = { name: displayName, email };
-        console.log(signedInUser);
+        setLoggedInUser(signedInUser);
       })
       .catch((error) => {
         // Handle Errors here.
