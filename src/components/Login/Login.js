@@ -4,6 +4,7 @@ import "firebase/auth";
 import firebaseConfig from './firebase.config';
 import { Button } from '@material-ui/core';
 import { UserContext } from '../../App';
+import { useHistory, useLocation } from 'react-router';
 
 // Initialize Firebase
 if (firebase.apps.length === 0) {
@@ -13,6 +14,10 @@ if (firebase.apps.length === 0) {
 const Login = () => {
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
+  const history = useHistory();
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
+
   const handleGoogleSignIn = () => {
     const googleProvider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(googleProvider)
@@ -20,6 +25,7 @@ const Login = () => {
         const { displayName, email } = result.user;
         const signedInUser = { name: displayName, email };
         setLoggedInUser(signedInUser);
+        history.replace(from);
       })
       .catch((error) => {
         // Handle Errors here.

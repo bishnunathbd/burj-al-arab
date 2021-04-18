@@ -11,6 +11,7 @@ import Login from './components/Login/Login';
 import Header from './components/Header/Header';
 import Book from './components/Book/Book';
 import { createContext, useState } from 'react';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 export const UserContext = createContext();
 
@@ -29,9 +30,9 @@ function App() {
           <Route path='/login'>
             <Login></Login>
           </Route>
-          <Route path='/book/:bedType'>
+          <PrivateRoute path='/book/:bedType'>
             <Book></Book>
-          </Route>
+          </PrivateRoute>
           <Route exact path='/'>
             <Home></Home>
           </Route>
